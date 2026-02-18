@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Plot Selector</title>
+  <meta charset="utf-8" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"
+  />
+  <style>
+    #map { height: 100vh; }
+    button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      padding: 8px 12px;
+    }
+  </style>
+</head>
+<body>
+
+<button onclick="sendPolygon()">Analyze Plot</button>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+
+<script>
+  const map = L.map('map').setView([12.9716, 77.5946], 18);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  const drawnItems = new L.FeatureGroup();
+  map.addLayer(drawnItems);
+
+  const drawControl = new L.Control.Draw({
+    draw: {
+      polygon: true,
+      rectangle: false,
+      circle: false,
+      marker: false,
+      polyline: false
+    },
+    edit: {
+      featureGroup: drawnItems
+    }
+  });
+
+  map.addControl(drawControl);
+
+  map.on(L.Draw.Event.CREATED, function (event) {
+    drawnItems.clearLayers();
+    drawnItems.addLayer(event.layer);
+  });
+
+  function sendPolygon() {
+    if (drawnItems.getLayers().length === 0) {
+      alert("Draw a plot first");
+      return;
+    }
+
+    const geojson = drawnItems.toGeoJSON();
+
+    fetch("http://127.0.0.1:8000/analyze-site", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(geojson)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Site Analysis:", data);
+      alert(JSON.stringify(data, null, 2));
+    });
+  }
+</script>
+
+</body>
+</html>

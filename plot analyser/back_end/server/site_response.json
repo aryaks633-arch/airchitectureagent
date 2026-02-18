@@ -1,0 +1,88 @@
+{
+  "plot_coords": [
+    [
+      77.593652,
+      12.973461
+    ],
+    [
+      77.593609,
+      12.973686
+    ],
+    [
+      77.593732,
+      12.973686
+    ],
+    [
+      77.593738,
+      12.973493
+    ],
+    [
+      77.593652,
+      12.973461
+    ]
+  ],
+  "total_plot_area": {
+    "sq_m": 282.72,
+    "sq_ft": 3043.2
+  },
+  "roads": [],
+  "front_direction": "North",
+  "front_edge_index": 0,
+  "corner_plot": false,
+  "road_count": 0,
+  "sunlight": {
+    "0": {
+      "exposure": "strong"
+    },
+    "1": {
+      "exposure": "soft"
+    },
+    "2": {
+      "exposure": "strong"
+    },
+    "3": {
+      "exposure": "harsh"
+    }
+  },
+  "wind": {
+    "prevailing": {
+      "primary": {
+        "dir": "SW",
+        "strength": "high"
+      },
+      "secondary": {
+        "dir": "NE",
+        "strength": "medium"
+      },
+      "confidence": "high"
+    },
+    "edge_exposure": {
+      "0": "low",
+      "1": "low",
+      "2": "medium",
+      "3": "high"
+    }
+  },
+  "boundary_dimensions": [
+    {
+      "edge_index": 0,
+      "length_m": 25.33,
+      "length_ft": 83.09
+    },
+    {
+      "edge_index": 1,
+      "length_m": 13.35,
+      "length_ft": 43.78
+    },
+    {
+      "edge_index": 2,
+      "length_m": 21.36,
+      "length_ft": 70.08
+    },
+    {
+      "edge_index": 3,
+      "length_m": 9.98,
+      "length_ft": 32.74
+    }
+  ]
+}
