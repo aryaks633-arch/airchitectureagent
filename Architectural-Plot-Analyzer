@@ -1,0 +1,75 @@
+import requests
+
+def analyze_plot(latitude, longitude):
+
+    overpass_url = "https://overpass-api.de/api/interpreter"
+
+    # Find nearby roads
+    road_query = f"""
+    [out:json];
+    (
+      way(around:200,{latitude},{longitude})["highway"];
+    );
+    out body;
+    """
+
+    road_response = requests.get(
+        overpass_url,
+        params={"data": road_query}
+    )
+
+    road_data = road_response.json()
+
+    roads = []
+
+    for item in road_data["elements"]:
+        if "tags" in item:
+            road_name = item["tags"].get("name", "Unnamed Road")
+            roads.append(road_name)
+
+    # Find nearby buildings
+    building_query = f"""
+    [out:json];
+    (
+      way(around:100,{latitude},{longitude})["building"];
+    );
+    out body;
+    """
+
+    building_response = requests.get(
+        overpass_url,
+        params={"data": building_query}
+    )
+
+    building_data = building_response.json()
+
+    building_count = len(building_data["elements"])
+
+    print("\n----- PLOT ANALYSIS REPORT -----")
+
+    print(f"Latitude : {latitude}")
+    print(f"Longitude: {longitude}")
+
+    print("\nNearby Roads:")
+    for road in set(roads):
+        print("-", road)
+
+    print(f"\nNearby Buildings: {building_count}")
+
+    # Simple Recommendations
+
+    print("\nRecommendations:")
+
+    if building_count > 10:
+        print("• Provide larger windows for ventilation")
+        print("• Consider privacy-oriented room placement")
+    else:
+        print("• Good open surroundings")
+        print("• Suitable for natural lighting")
+
+# Example Coordinates
+
+analyze_plot(
+    12.9716,
+    77.5946
+)
